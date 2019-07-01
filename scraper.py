@@ -4,6 +4,7 @@ from selenium import webdriver as wd
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.action_chains import ActionChains
 import datetime
 from time import sleep
 import json
@@ -63,6 +64,7 @@ class StoriesWD():
         sleep(2)
 
     def stories(self, force=False):
+        action = ActionChains(self.driver);
         images=[]
         videos=[]
         try:
@@ -85,24 +87,24 @@ class StoriesWD():
                 try:
                     video = section.find_element_by_css_selector("div video source")
                     video_url = video.get_attribute("src")
-                    # print(f"Video URL: {video_url}")
                     videos.append(video_url)
                 except Exception as e:
                     print("No video found")
                 finally:
                     image = section.find_element_by_css_selector("img.y-yJ5")
                     image_url = image.get_attribute("src")
-                    # print(f"Screenshot: {image_url}")
                     if video_url is None:
                         images.append(image_url)
             else:
                 print("End of Stories")
                 return images, videos
-            next_button = section.find_element_by_class_name("coreSpriteRightChevron")
-            next_button.click()
+
+            body = self.driver.find_element_by_css_selector('body')
+            action.move_to_element(body).perform();
+            body.send_keys(Keys.ARROW_RIGHT)
             sleep(1)
 
-            return images, videos
+        return images, videos
 
     def download_stories(self, username, force=False):
         """
@@ -123,6 +125,6 @@ if __name__ == "__main__":
     scraper.home()
     scraper.login('citizenpixel', '1997igna')
     # scraper.load_cookies()
-    # print(scraper.download_stories("ignaciosoffia", force=True))
+    # print(scraper.download_stories("tmobile", force=True))
     scraper.save_cookies()
     scraper.close()
