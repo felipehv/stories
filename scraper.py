@@ -120,6 +120,7 @@ class StoriesWD():
 
 if __name__ == "__main__":
     scraper = StoriesWD()
+    scraper.home()
     scraper.login('citizenpixel', '1997igna')
     # scraper.load_cookies()
     # print(scraper.download_stories("ignaciosoffia", force=True))
