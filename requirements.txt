@@ -22,7 +22,6 @@ docutils==0.14
 entrypoints==0.3
 enum-compat==0.0.2
 fabric==2.4.0
-gurobipy==8.1.1
 idna==2.8
 invoke==1.2.0
 ipykernel==5.1.0
