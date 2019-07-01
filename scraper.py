@@ -46,6 +46,7 @@ class StoriesWD():
         if "cookies.pkl" in os.listdir("./"):
             cookies = pickle.load(open("cookies.pkl", "rb"))
             for cookie in cookies:
+                print(cookie)
                 self.driver.add_cookie(cookie)
         print("Successfully loaded cookies")      
 
@@ -119,8 +120,8 @@ class StoriesWD():
 
 if __name__ == "__main__":
     scraper = StoriesWD()
-    scraper.load_cookies()
-    print(scraper.download_stories("ignaciosoffia", force=True))
+    scraper.login('citizenpixel', '1997igna')
+    # scraper.load_cookies()
+    # print(scraper.download_stories("ignaciosoffia", force=True))
     scraper.save_cookies()
     scraper.close()
-    # scraper.login('citizenpixel', '1997igna')
