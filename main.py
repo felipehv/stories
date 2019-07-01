@@ -9,7 +9,7 @@ with open("clients.csv") as reader:
     for linea in reader:
         client, folder_id, username = linea.strip().split(',')
         print(f"Client: {client}, username: {username}")
-        images, videos = scraper.download_stories(username, force=True)
+        images, videos = scraper.download_stories(username)
         print(f"{len(images)} images found, {len(videos)} videos found")
         print("Uploading images")
         for image_url in images:
