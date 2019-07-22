@@ -62,22 +62,32 @@ class StoriesWD():
         sleep(2)
 
     def get_user(self,username):
-        self.driver.get(f"https://www.instagram.com/{username}/")
+        if "#" in username:
+            print("Scraping hashtag")
+            self.driver.get(f"https://www.instagram.com/explore/tags/{username[1:]}/")
+        else:
+            self.driver.get(f"https://www.instagram.com/{username}/")
         sleep(2)
 
-    def stories(self, force=False):
+    def stories(self, force=False, hashtag=False):
         action = ActionChains(self.driver);
         images=[]
         videos=[]
+        expected_dim = 170 if hashtag else 168
         try:
-            dimension = int(self.driver.find_element_by_class_name("CfWVH").get_attribute("height"))
+            if hashtag:
+                dimension = int(self.driver.find_element_by_tag_name("canvas").get_attribute("height"))
+            else:
+                dimension = int(self.driver.find_element_by_class_name("CfWVH").get_attribute("height"))
         except Exception as e:
+            print(e)
             print("No stories at the time")
             return images, videos
-        if dimension % 168 != 0 and not force:
+        if dimension % expected_dim != 0 and not force:
             return images, videos
 
-        story_button = self.driver.find_element_by_class_name("_6q-tv")
+        sb_name = "_7A2D8" if hashtag else "_6q-tv"
+        story_button = self.driver.find_element_by_class_name(sb_name)
         story_button.click()
         sleep(1)
         while True:
@@ -108,13 +118,13 @@ class StoriesWD():
 
         return images, videos
 
-    def download_stories(self, username, force=False):
+    def download_stories(self, username, force=False, hashtag=False):
         """
         Goes to :username: profile and gets
         all urls.
         """
         self.get_user(username)
-        return self.stories(force)
+        return self.stories(force, hashtag)
             
     def take_screenshot(self, name):
         self.driver.save_screenshot(f"{name}.png")
@@ -125,10 +135,10 @@ class StoriesWD():
 if __name__ == "__main__":
     scraper = StoriesWD()
     # scraper.home()
-    scraper.login('itsbeerness', 'homero')
+    # scraper.login('itsbeerness', 'homero')
     # scraper.login('citizenpixel', '1997igna')
-    # scraper.load_cookies()
+    scraper.load_cookies()
     sleep(5)
-    # print(scraper.download_stories("tmobile", force=True))
+    print(scraper.download_stories("#miinviernotricao", force=True, hashtag=True))
     scraper.save_cookies()
     scraper.close()
