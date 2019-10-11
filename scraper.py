@@ -135,8 +135,7 @@ class StoriesWD():
 if __name__ == "__main__":
     scraper = StoriesWD()
     # scraper.home()
-    # scraper.login('itsbeerness', 'homero')
-    # scraper.login('citizenpixel', '1997igna')
+    # scraper.login('example', '123456')
     scraper.load_cookies()
     sleep(5)
     print(scraper.download_stories("#miinviernotricao", force=True, hashtag=True))
